@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <script>
+  function translateLanguage()
+  {
+    var languageFrom = document.getElementById("language_from").value;
+    var languageTo = document.getElementById("language_to").value;
+    var languageString = document.getElementById("language_from_string").value;
+   
+    google.script.run.withSuccessHandler(function(languageOutput) 
+    {
+      document.getElementById("language_to_string").innerHTML = languageOutput;
+      
+    }).getTranslate(languageFrom, languageTo, languageString);
+  }
+  function loadlanguages()
+  {  
+    google.script.run.withSuccessHandler(function(ar) 
+    {
+    var languageFromSelect = document.getElementById("language_from");
+    var languageToSelect = document.getElementById("language_to");
+    console.log(ar);
+    
+    let blank_option1 = document.createElement("option");
+    blank_option1.value = "";
+    blank_option1.text = "";
+    let blank_option2 = document.createElement("option");
+    blank_option2.value = "";
+    blank_option2.text = "";
+    languageFromSelect.appendChild(blank_option1);
+    languageToSelect.appendChild(blank_option2);
+    
+    ar.forEach(function(item, index) 
+    {    
+      let value_option1 = document.createElement("option");
+      value_option1.value = item[1];
+      value_option1.text = item[0];
+      let value_option2 = document.createElement("option");
+      value_option2.value = item[1];
+      value_option2.text = item[0];
+      languageFromSelect.appendChild(value_option1);
+      languageToSelect.appendChild(value_option2);    
+    });
+    
+    }).getLanguages();
+  }
+</script>
+<style>
+html {
+  height:100%;
+}
+
+body {
+  margin:0;
+}
+
+.bg {
+  animation:slide 3s ease-in-out infinite alternate;
+  background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);
+  bottom:0;
+  left:-50%;
+  opacity:.5;
+  position:fixed;
+  right:-50%;
+  top:0;
+  z-index:-1;
+}
+
+.bg2 {
+  animation-direction:alternate-reverse;
+  animation-duration:4s;
+}
+
+.bg3 {
+  animation-duration:5s;
+}
+
+
+
+.content {
+  background-color:rgba(192,192,192,0.3);
+  border-radius:.25em;
+  box-shadow:0 0 .25em rgba(255,0,255,0.3);
+  box-sizing:border-box;
+  left:50%;
+  padding:10vmin;
+  position:fixed;
+  text-align:center;
+  top:50%;
+  transform:translate(-50%, -50%);
+}
+
+h1 {
+  font-family:monospace;
+}
+
+@keyframes slide {
+  0% {
+    transform:translateX(-25%);
+  }
+  100% {
+    transform:translateX(25%);
+  }
+}
+}
+</style>
+<body>
+  <div class="bg"></div>
+<div class="bg bg2"></div>
+<div class="bg bg3"></div>
+</div>
+<center>
+
+<style> 
+#myDIV {
+  background: blue;
+  animation: mymove 1s infinite;
+}
+
+@keyframes mymove {
+  from {background-color: red;}
+  to {background-color: blue;}
+}
+</style>
+<label><h1><B>LANGUAGE TRANSLATOR</B></h1></label><br><br>
+  <label> <B>From Language:</B></label> &nbsp;<select id="language_from"  ></select>&nbsp;&nbsp;
+  <label><B>To Language:</B></label>&nbsp;<select id="language_to"  ></select><br><br>
+  <label><B>YOUR TEXT HERE !</label><br>
+  <textarea id="language_from_string" rows="20" cols="60" ></textarea><br><BR>
+  <input type="button" value="Translate" onclick="translateLanguage()" /><br><br>
+  <label><B>TRANSLATED SENTENCE</B></label><br>
+  <textarea id="language_to_string" rows="20" cols="60" ></textarea>
+  <script>loadlanguages();
+  </script>
+</center>
+</body>
+</html>
